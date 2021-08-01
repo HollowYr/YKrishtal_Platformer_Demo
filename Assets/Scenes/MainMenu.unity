@@ -8383,7 +8383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 605693812}
-  sceneNum: 2
+  sceneNum: 1
 --- !u!114 &1950339291
 MonoBehaviour:
   m_ObjectHideFlags: 0

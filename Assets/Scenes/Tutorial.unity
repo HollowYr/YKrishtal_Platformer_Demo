@@ -5158,7 +5158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 256800289}
-  sceneNum: 0
+  sceneNum: 2
 --- !u!114 &1818580550
 MonoBehaviour:
   m_ObjectHideFlags: 0
