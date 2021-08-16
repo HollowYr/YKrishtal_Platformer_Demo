@@ -122,8 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b763d0bc882c9940afc955e80dc155f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerScript: {fileID: 0}
   heartsHealthVisual: {fileID: 0}
-  damageAmount: 2
-  knockbackDistance: {x: 400, y: 200}
+  knockbackDistance: {x: 2250, y: 1125}
   velocityMax: {x: 5, y: 10}
   minVelocity: {x: 3, y: 5}
+  damageAmount: 1

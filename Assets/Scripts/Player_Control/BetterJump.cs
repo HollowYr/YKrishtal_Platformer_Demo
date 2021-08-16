@@ -31,15 +31,17 @@ public class BetterJump : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
+        if (GameTime.Instance.isPaused) return;
+
         if (pointerDown)
         {
-            pointerDownTimer += Time.deltaTime;
+            pointerDownTimer += GameTime.Instance.deltaTime;
             if (pointerDownTimer >= requiredHoldTime)
             {
                 // Rb is falling down
                 if (rb.velocity.y < 0)
                 {
-                    rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+                    rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * GameTime.Instance.deltaTime;
                 }
 
             }
@@ -47,7 +49,7 @@ public class BetterJump : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // if Rb is just jumping up
         else if (rb.velocity.y > 0)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * GameTime.Instance.deltaTime;
 
         }
     }

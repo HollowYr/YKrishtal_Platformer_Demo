@@ -14,22 +14,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runSpeed = 40f;
     [SerializeField] private FixedJoystick fixedJoystick;
 
-    float horizontalMove = 0f;
+    internal float horizontalMove = 0f;
     bool jumpInput = false,
         crouchInput = false, crouchState;
 
     private void FixedUpdate()
     {
+
         // sending input to movement Logic
-        controller.Move(horizontalMove * Time.fixedDeltaTime, crouchInput, jumpInput);
+        controller.Move(horizontalMove * GameTime.Instance.fixedDeltaTime, crouchInput, jumpInput);
     }
 
     void Update()
     {
-        horizontalMove = fixedJoystick.Horizontal * runSpeed;
-#if UNITY_EDITOR
-        horizontalMove = Input.GetAxis("Horizontal") * runSpeed;
-#endif
+        if (!GameTime.Instance.isPaused)
+            horizontalMove = fixedJoystick.Horizontal * runSpeed;
+        else horizontalMove = 0f;
+
+        //#if UNITY_EDITOR
+        //        horizontalMove = Input.GetAxis("Horizontal") * runSpeed;
+        //#endif
 
         if (playerScript.heartsHealthVisual.IsDead())
         {

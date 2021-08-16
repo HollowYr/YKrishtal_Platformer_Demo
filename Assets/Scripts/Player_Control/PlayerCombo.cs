@@ -30,10 +30,11 @@ public class PlayerCombo : MonoBehaviour
 
     private void Update()
     {
+        if (GameTime.Instance.isPaused) return;
         // start timer after first attack
         if (startTimer)
         {
-            timer += Time.deltaTime;
+            timer += GameTime.Instance.deltaTime;
         }
 
         // refresh timer and attack index if player don't attack in timeBetweenAttacks period

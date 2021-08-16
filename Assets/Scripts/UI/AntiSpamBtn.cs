@@ -25,6 +25,8 @@ public class AntiSpamBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
+        if (GameTime.Instance.isPaused) return;
+
         if (pointerDown && !pressed)
         {
             pressed = true;
@@ -41,7 +43,7 @@ public class AntiSpamBtn : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
 
             // wait requiredPressDelay before next invoke
-            pointerDownTimer += Time.deltaTime;
+            pointerDownTimer += GameTime.Instance.deltaTime;
             if (pointerDownTimer >= requiredPressDelay)
             {
                 // resetting timer after requiredPressDelay

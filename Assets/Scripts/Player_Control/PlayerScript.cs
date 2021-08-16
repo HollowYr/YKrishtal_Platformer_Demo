@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] internal PlayerCombo playerCombo;
     [SerializeField] internal PlayerMovement playerMovement;
     [SerializeField] internal HeartsHealthVisual heartsHealthVisual;
+    [SerializeField] internal Joystick joystick;
 
     internal Animator animator;
     internal CharacterController2D characterController2D;

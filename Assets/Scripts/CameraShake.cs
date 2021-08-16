@@ -37,9 +37,9 @@ public class CameraShake : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shakeTimer > 0)
+        if (shakeTimer > 0 && !GameTime.Instance.isPaused)
         {
-            shakeTimer -= Time.deltaTime;
+            shakeTimer -= GameTime.Instance.deltaTime;
             if (shakeTimer <= 0f)
             {
                 // time's over

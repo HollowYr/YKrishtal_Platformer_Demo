@@ -35,7 +35,9 @@ public class EnemyContoller : MonoBehaviour
 
     public void MoveTo(Transform destination, float speed)
     {
-        rb.position = Vector2.MoveTowards(transform.position, destination.position, speed * Time.deltaTime);
+        if (GameTime.Instance.isPaused) return;
+
+        rb.position = Vector2.MoveTowards(transform.position, destination.position, speed * GameTime.Instance.deltaTime);
 
         if ((transform.position.x < destination.position.x && facingRight)
             || (transform.position.x > destination.position.x && !facingRight))

@@ -35,7 +35,6 @@ public class Slime_Move : StateMachineBehaviour
                 {
                     enemyController.MoveTo(player.transform, speed);
                 }
-
                 else
                 {
                     if (patrolPointIndex >= enemyController.patrolPoints.Length - 1)
@@ -56,9 +55,6 @@ public class Slime_Move : StateMachineBehaviour
             {
                 animator.SetBool("IsIdle", true);
             }
-
-
-
         }
     }
 }

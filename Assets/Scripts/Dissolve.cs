@@ -24,10 +24,10 @@ public class Dissolve : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDissolving)
+        if (isDissolving && !GameTime.Instance.isPaused)
         {
-            fade -= Time.deltaTime;
-            if(fade <= 0f)
+            fade -= GameTime.Instance.deltaTime;
+            if (fade <= 0f)
             {
                 fade = 0;
                 isDissolving = false;
