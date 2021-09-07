@@ -13,7 +13,7 @@ public class BetterJump : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
     [SerializeField] private float requiredHoldTime = .1f;
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private PlayerScript playerScript;
 
     private bool pointerDown;
     private float pointerDownTimer;
@@ -31,7 +31,7 @@ public class BetterJump : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
-        if (GameTime.Instance.isPaused) return;
+        if (GameTime.Instance.isPaused || playerScript.characterController2D.isDashing) return;
 
         if (pointerDown)
         {
@@ -39,18 +39,17 @@ public class BetterJump : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             if (pointerDownTimer >= requiredHoldTime)
             {
                 // Rb is falling down
-                if (rb.velocity.y < 0)
+                if (playerScript.rb.velocity.y < 0)
                 {
-                    rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * GameTime.Instance.deltaTime;
+                    playerScript.rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * GameTime.Instance.deltaTime;
                 }
 
             }
         }
         // if Rb is just jumping up
-        else if (rb.velocity.y > 0)
+        else if (playerScript.rb.velocity.y > 0)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * GameTime.Instance.deltaTime;
-
+            playerScript.rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * GameTime.Instance.deltaTime;
         }
     }
 }

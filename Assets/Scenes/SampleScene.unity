@@ -9279,6 +9279,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 1491633952}
   - {fileID: 98450605}
+  stunDelay: 0.4
 --- !u!61 &487669388
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11074,7 +11075,7 @@ Transform:
   m_GameObject: {fileID: 1273398062}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -24.02, y: -1.222, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 759265719}
   m_Father: {fileID: 0}
@@ -11333,6 +11334,10 @@ PrefabInstance:
       propertyPath: onPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 759265725}
+    - target: {fileID: 2815614048549019791, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 759265722}
     - target: {fileID: 2815614048583800971, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -11401,18 +11406,6 @@ PrefabInstance:
       propertyPath: rb
       value: 
       objectReference: {fileID: 759265720}
-    - target: {fileID: 8244285442720861710, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244285442831803609, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244285442985964109, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6078dabf7a9ab442a81c88477261388, type: 3}
 --- !u!114 &1332700672 stripped
@@ -12083,6 +12076,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 1259607738}
   - {fileID: 1543745800}
+  stunDelay: 0.4
 --- !u!61 &1562719195
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12550,6 +12544,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 1832870123}
   - {fileID: 642600308}
+  stunDelay: 0.4
 --- !u!114 &1711444964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12884,6 +12879,7 @@ GameObject:
   - component: {fileID: 1808237307}
   - component: {fileID: 1808237306}
   - component: {fileID: 1808237308}
+  - component: {fileID: 1808237309}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -12951,6 +12947,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4863fbb94665f6942aef2f8c42174d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1808237309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808237305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e27b895e5b3424bbe4d45b3345d1ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1818580548

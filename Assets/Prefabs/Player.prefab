@@ -289,6 +289,7 @@ MonoBehaviour:
   playerCombo: {fileID: 5353642655377588012}
   playerMovement: {fileID: 5353642655377588011}
   heartsHealthVisual: {fileID: 0}
+  joystick: {fileID: 0}
 --- !u!114 &5353642655377588012
 MonoBehaviour:
   m_ObjectHideFlags: 0

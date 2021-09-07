@@ -14,11 +14,16 @@ public class EnemyContoller : MonoBehaviour
     [SerializeField] private float attackRange = .5f;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] internal Transform[] patrolPoints;
+    [SerializeField] private float stunDelay = .4f;
 
     bool facingRight = false;
     private Animator animator;
     private int currentHealth;
     internal Rigidbody2D rb;
+
+    bool canAttack = true;
+    float canAttackTimer = 0f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +31,18 @@ public class EnemyContoller : MonoBehaviour
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (!canAttack)
+        {
+            canAttackTimer += GameTime.Instance.deltaTime;
+            if (canAttackTimer >= stunDelay)
+            {
+                canAttack = true;
+            }
+        }
     }
 
     public bool isDead()
@@ -47,6 +64,8 @@ public class EnemyContoller : MonoBehaviour
     }
     public void Attack()
     {
+        if (!canAttack) return;
+
         animator.Play(transform.name + "_Attack1");
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoints[0].position, attackRange, enemyLayer);
@@ -93,7 +112,7 @@ public class EnemyContoller : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
-
+        canAttack = false;
         if (currentHealth <= 0)
         {
             StartCoroutine(Die());

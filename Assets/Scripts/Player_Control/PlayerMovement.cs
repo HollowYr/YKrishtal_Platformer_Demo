@@ -11,8 +11,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] PlayerScript playerScript;
 
     [SerializeField] internal CharacterController2D controller;
+    [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private float runSpeed = 40f;
     [SerializeField] private FixedJoystick fixedJoystick;
+    [SerializeField] private float dashDistance = 15f, dashDelay = .4f;
+
+
 
     internal float horizontalMove = 0f;
     bool jumpInput = false,
@@ -20,9 +24,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         // sending input to movement Logic
-        controller.Move(horizontalMove * GameTime.Instance.fixedDeltaTime, crouchInput, jumpInput);
+        if (!controller.isDashing)
+            controller.Move(horizontalMove * GameTime.Instance.fixedDeltaTime, crouchInput, jumpInput);
     }
 
     void Update()
@@ -31,9 +35,10 @@ public class PlayerMovement : MonoBehaviour
             horizontalMove = fixedJoystick.Horizontal * runSpeed;
         else horizontalMove = 0f;
 
-        //#if UNITY_EDITOR
-        //        horizontalMove = Input.GetAxis("Horizontal") * runSpeed;
-        //#endif
+#if UNITY_EDITOR
+        horizontalMove = Input.GetAxis("Horizontal") * runSpeed;
+
+#endif
 
         if (playerScript.heartsHealthVisual.IsDead())
         {
@@ -73,6 +78,23 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void CreateDust()
+    {
+        particleSystem.Play();
+    }
+
+    public void Dash()
+    {
+        playerScript.ChangeAnimationState("Player_Dash");
+        if (controller.isGrounded())
+        {
+            CreateDust();
+        }
+
+        controller.Dash(dashDistance, dashDelay);
+
+    }
+
     public void crouchDown()
     {
         crouchInput = true;
@@ -82,7 +104,10 @@ public class PlayerMovement : MonoBehaviour
     public void crouchUp()
     {
         crouchInput = false;
-        crouchState = crouchInput;
+        if (!playerScript.characterController2D.isUnderCeiling())
+        {
+            crouchState = crouchInput;
+        }
     }
 
     public void OnCrouching(bool isCrouching)
@@ -95,12 +120,14 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpInput = true;
             playerScript.ChangeAnimationState("Player_Jump");
+            CreateDust();
         }
     }
 
     public void onLanding()
     {
         jumpInput = false;
+        CreateDust();
     }
 
 }

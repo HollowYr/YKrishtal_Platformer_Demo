@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -13,12 +14,15 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
 
-    const float k_GroundedRadius = 1f; // Radius of the overlap circle to determine if grounded
+    const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
     const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
     private Rigidbody2D m_Rigidbody2D;
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
+
+    public bool isDashing { get; set; }
+    private float dashDistance, dashDelay;
 
     [Header("Events")]
     [Space]
@@ -40,6 +44,7 @@ public class CharacterController2D : MonoBehaviour
 
         if (OnCrouchEvent == null)
             OnCrouchEvent = new BoolEvent();
+        isDashing = false;
     }
 
     private void FixedUpdate()
@@ -61,6 +66,20 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
+    public bool isUnderCeiling()
+    {
+        return Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround);
+    }
+
+    public void Dash(float dashDistance, float dashDelay)
+    {
+        if (this.dashDistance != dashDistance)
+            this.dashDistance = dashDistance;
+        if (this.dashDelay != dashDelay)
+            this.dashDelay = dashDelay;
+        
+        StartCoroutine(Dash());
+    }
 
     public void Move(float move, bool crouch, bool jump)
     {
@@ -68,7 +87,7 @@ public class CharacterController2D : MonoBehaviour
         if (!crouch && m_wasCrouching)
         {
             // If the character has a ceiling preventing them from standing up, keep them crouching
-            if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+            if (isUnderCeiling())
             {
                 crouch = true;
             }
@@ -77,7 +96,6 @@ public class CharacterController2D : MonoBehaviour
         //only control the player if grounded or airControl is turned on
         if (m_Grounded || m_AirControl)
         {
-
             // If crouching
             OnCrouchEvent.Invoke(crouch);
             if (crouch)
@@ -106,10 +124,14 @@ public class CharacterController2D : MonoBehaviour
                 }
             }
 
-            // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
-            // And then smoothing it out and applying it to the character
-            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            if (!isDashing)
+            {
+                // Move the character by finding the target velocity
+                Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+                // And then smoothing it out and applying it to the character
+                m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+
+            }
 
             // If the input is moving the player right and the player is facing left...
             if (move > 0 && !m_FacingRight)
@@ -134,6 +156,23 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        Vector2 oldVelocity = m_Rigidbody2D.velocity;
+        m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0f);
+        float direction = (m_FacingRight) ? 1f : -1f;
+        m_Rigidbody2D.AddForce(new Vector2(direction * dashDistance, 0f), ForceMode2D.Impulse);
+
+        float gravity = m_Rigidbody2D.gravityScale;
+        m_Rigidbody2D.gravityScale = 0f;
+
+        yield return new WaitForSeconds(dashDelay);
+        isDashing = false;
+        m_Rigidbody2D.velocity = oldVelocity;
+        m_Rigidbody2D.gravityScale = gravity;
+    }
+
     public bool isGrounded()
     {
         return m_Grounded;
@@ -149,4 +188,10 @@ public class CharacterController2D : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(m_CeilingCheck.position, k_CeilingRadius);
+    }
+
 }
